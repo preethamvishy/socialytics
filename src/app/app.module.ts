@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 
 import { InstagramModule } from './instagram/instagram.module'
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [

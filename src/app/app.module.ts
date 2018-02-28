@@ -1,16 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { APP_ROUTES } from './app-route';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
+import { InstagramModule } from './instagram/instagram.module'
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(APP_ROUTES),
+    InstagramModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

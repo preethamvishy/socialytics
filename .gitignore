@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+.editorconfig
+.DS_Store
+*/.DS_Store
+package-lock.json
+e2e

@@ -14,5 +14,12 @@ export class InstagramService {
       .map(res => res)
   }
 
+  getUserById(
+    userId,
+    count = 50,
+    after = '') {
+    return this.http.get(`https://www.instagram.com/graphql/query/?query_id=17888483320059182&id=${userId}&first=${count}&after=${after}`)
+      .map(res => res)
+  }
 
 }

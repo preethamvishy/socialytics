@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
-// import 'rxjs/Rx';
 
 @Injectable()
 export class InstagramService {
@@ -50,7 +49,6 @@ export class InstagramService {
     console.log('Average likes:         ' + averageLikes)
     console.log('Average comments:      ' + averageComments)
     console.log('Average engagements:   ' + (likes + comments) / count)
-    console.log(user)
     return {
         username: username,
         name: user.full_name,

@@ -1,8 +1,8 @@
 <div *ngIf="loaded == true" style="display: block">
   <canvas baseChart
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType"
+              [data]="averageChartData"
+              [labels]="averageChartLabels"
+              [chartType]="averageChartType"
               (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
 </div>

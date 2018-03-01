@@ -16,28 +16,30 @@ export class InstagramComponent implements OnInit {
   basicUserData;
   advancedUserData;
   media: any[] = [];
-
-  public doughnutChartLabels:string[] = ['Average Likes', 'Average Comments', 'Average Engagements'];
-  public doughnutChartData:number[] = [];
-  public doughnutChartType:string = 'doughnut';
-  
+  username = 'manutdfotos';
   loaded=false;
+
+  public averageChartLabels:string[] = ['Average Likes', 'Average Comments', 'Average Engagements'];
+  public averageChartData:number[] = [];
+  public averageChartType:string = 'doughnut';
+  
+  
   constructor(private http: HttpClient,
     private instagramService: InstagramService) {
 
   }
 
   ngOnInit() {
-    this.instagramService.getUserByUsername('manutdfotos')
+    this.instagramService.getUserByUsername(this.username)
     .subscribe((res) => {
       this.basicUserData = res;
       this.instagramService.getUserById(this.basicUserData.user.id)
       .subscribe((res) => {
         this.advancedUserData = res
-        var stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, 'manutdfotos', 5)
-        this.doughnutChartData.push(stats.averageLikes)
-        this.doughnutChartData.push(stats.averageComments)
-        this.doughnutChartData.push(stats.averageEngagements)
+        var stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 5)
+        this.averageChartData.push(stats.averageLikes)
+        this.averageChartData.push(stats.averageComments)
+        this.averageChartData.push(stats.averageEngagements)
         this.loaded = true;
       })
     })

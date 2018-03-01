@@ -17,16 +17,30 @@ export class InstagramComponent implements OnInit {
   advancedUserData;
   media: any[] = [];
 
-  public doughnutChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-  public doughnutChartData:number[] = [350, 450, 100];
+  public doughnutChartLabels:string[] = ['Average Likes', 'Average Comments', 'Average Engagements'];
+  public doughnutChartData:number[] = [];
   public doughnutChartType:string = 'doughnut';
-
+  
+  loaded=false;
   constructor(private http: HttpClient,
     private instagramService: InstagramService) {
 
   }
 
   ngOnInit() {
+    this.instagramService.getUserByUsername('manutdfotos')
+    .subscribe((res) => {
+      this.basicUserData = res;
+      this.instagramService.getUserById(this.basicUserData.user.id)
+      .subscribe((res) => {
+        this.advancedUserData = res
+        var stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, 'manutdfotos', 5)
+        this.doughnutChartData.push(stats.averageLikes)
+        this.doughnutChartData.push(stats.averageComments)
+        this.doughnutChartData.push(stats.averageEngagements)
+        this.loaded = true;
+      })
+    })
   }
 
 }

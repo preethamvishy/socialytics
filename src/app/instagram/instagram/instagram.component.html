@@ -1,4 +1,4 @@
-<div style="display: block">
+<div *ngIf="loaded == true" style="display: block">
   <canvas baseChart
               [data]="doughnutChartData"
               [labels]="doughnutChartLabels"

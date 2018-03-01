@@ -13,15 +13,20 @@ import { InstagramService } from '../instagram.service'
 })
 export class InstagramComponent implements OnInit {
 
+  basicUserData;
+  advancedUserData;
+  media: any[] = [];
+
+  public doughnutChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+  public doughnutChartData:number[] = [350, 450, 100];
+  public doughnutChartType:string = 'doughnut';
+
   constructor(private http: HttpClient,
     private instagramService: InstagramService) {
 
   }
 
   ngOnInit() {
-    this.instagramService.getUserByUsername('manutdfotos')
-      .subscribe((res) => console.log(res))
-
   }
 
 }

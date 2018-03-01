@@ -22,4 +22,71 @@ export class InstagramService {
       .map(res => res)
   }
 
+  getStats (media, user, username, topCount = 5) {
+    var mediaArray = media,
+                    comments = 0,
+                    likes = 0,
+                    averageComments = 0,
+                    averageLikes = 0,
+                    count = 0,
+                    likesArray = [],
+                    commentsArray = [];
+
+    var mostLikedMedia = this.getTopLikedMedia(media, topCount),
+        mostCommentedMedia = this.getTopCommentedMedia(media, topCount);
+    for (let node of mediaArray) {
+        likes += node.node.edge_media_preview_like.count;
+        comments += node.node.edge_media_to_comment.count;
+        count++;
+    }
+
+    averageLikes = likes / count;
+    averageComments = comments / count;
+
+    console.log(`@${username} summary for the last ${count} posts:`)
+    console.log('Total likes:           ' + likes)
+    console.log('Total comments:        ' + comments)
+    console.log('Total engagements:     ' + (likes + comments))
+    console.log('Average likes:         ' + averageLikes)
+    console.log('Average comments:      ' + averageComments)
+    console.log('Average engagements:   ' + (likes + comments) / count)
+    console.log(user)
+    return {
+        username: username,
+        name: user.full_name,
+        id: user.id,
+        bio: user.biography,
+        website: user.external_url,
+        followers: user.followed_by.count,
+        following: user.follows.count,
+        posts: user.media.count,
+        totalLikes: likes,
+        totalComments: comments,
+        totalEngagements: (likes + comments),
+        averageLikes: (likes / count),
+        averageComments: (comments / count),
+        averageEngagements: ((likes + comments) / count),
+        mostLikedMedia: mostLikedMedia,
+        mostCommentedMedia: mostCommentedMedia,
+        success: true
+    }
+}
+
+getTopLikedMedia (media, topCount) {
+    return media.sort(function(node1, node2) {
+        var x = node1.node.edge_media_preview_like.count
+        var y = node2.node.edge_media_preview_like.count
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    }).slice(0, (topCount > media.length ? media.length : topCount))
+ }
+ 
+ getTopCommentedMedia (media, topCount) {
+    return media.sort(function(node1, node2) {
+        var x = node1.node.edge_media_to_comment.count
+        var y = node2.node.edge_media_to_comment.count
+        return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+    }).slice(0, (topCount > media.length ? media.length : topCount));
+ }
+ 
+ 
 }

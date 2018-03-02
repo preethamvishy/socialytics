@@ -37,22 +37,16 @@ export class InstagramComponent implements OnInit {
     { key: 'Average likes', value: '' },
     { key: 'Average comments', value: '' }
   ]
+
   constructor(private http: HttpClient,
     private instagramService: InstagramService,
     private fb: FormBuilder,
     private electronService: ElectronService) {
     this.createForm();
-
-
   }
 
   ngOnInit() {
-    this.http.get('./assets/mockStats.json')
-      .subscribe(res => {
-        console.log(res)
-        this.stats = res;
-        this.populateStats();
-      })
+    
   }
   createForm() {
     this.searchQuery = this.fb.group({
@@ -78,6 +72,25 @@ export class InstagramComponent implements OnInit {
   search() {
     this.username = this.searchQuery.value.username;
     console.log(this.username)
+    this.getUserData();
+  }
+  externalUrl(url) {
+    var shell = this.electronService.shell;
+    if(shell) 
+      shell.openExternal(url);
+    else 
+      window.open(url);
+  }
+  getMockData()
+  {
+    this.http.get('./assets/mockStats.json')
+      .subscribe(res => {
+        console.log(res)
+        this.stats = res;
+        this.populateStats();
+      })
+  }
+  getUserData() {
     this.instagramService.getUserByUsername(this.username)
       .subscribe((basicUserData) => {
         this.basicUserData = basicUserData;
@@ -93,12 +106,4 @@ export class InstagramComponent implements OnInit {
           })
       })
   }
-  externalUrl(url) {
-    var shell = this.electronService.shell;
-    if(shell) 
-      shell.openExternal(url);
-    else 
-      window.open(url);
-  }
-  
 }

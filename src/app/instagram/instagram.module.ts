@@ -5,12 +5,16 @@ import { InstagramComponent } from './instagram/instagram.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InstagramService } from './instagram.service';
 import { ChartsModule } from 'ng2-charts';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    ChartsModule
+    ChartsModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [InstagramComponent],
   exports: [InstagramComponent],

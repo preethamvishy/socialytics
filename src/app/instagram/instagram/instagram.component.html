@@ -1,25 +1,31 @@
+<form class="search-container">
+  <input  [(ngModel)]="username" type="text" id="search-bar" placeholder="Instagram username" (submit)="search()">
+  <a href="#">
+    <img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png" (click)="search()">
+  </a>
+</form>
 <div *ngIf="loaded==true" class="container">
-<div class="row">
-  <div class="profile">
-    <div class="col-md-12">
-      <div>
-        <div class="card-body">
-          <img class="avatar" [src]="stats.profilePictureHD" />
-          <div class="name">{{stats.name}}</div>
-          <div class="username">
-            @{{stats.username}}
-          </div>
-          <div class="bio">
-            {{stats.bio}}
-          </div>
-          <div class="bio">
-            <a [href]="stats.website">{{stats.website}}</a>
+  <div class="row">
+    <div class="profile">
+      <div class="col-md-12">
+        <div>
+          <div class="card-body">
+            <img class="avatar" [src]="stats.profilePictureHD" />
+            <div class="name">{{stats.name}}</div>
+            <div class="username">
+              @{{stats.username}}
+            </div>
+            <div class="bio">
+              {{stats.bio}}
+            </div>
+            <div class="bio">
+              <a [href]="stats.website">{{stats.website}}</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
   <div [style.margin-top.px]="'25'" class="row">
     <div *ngFor="let item of summary" class="col-md-4">
       <div class="card mb-4 box-shadow">

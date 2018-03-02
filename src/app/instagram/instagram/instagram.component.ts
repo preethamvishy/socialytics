@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import { InstagramService } from '../instagram.service'
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-instagram',

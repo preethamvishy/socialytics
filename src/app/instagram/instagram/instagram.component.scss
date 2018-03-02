@@ -26,11 +26,19 @@ body {
   color: #658585; 
   font-size: .87em;
 }
+
 .bio {
   margin: auto;
   margin-left: 10.43em;
   color: #c0c5c5; 
   font-size: .87em;
+}
+.website {
+  margin: auto;
+  margin-left: 10.43em;
+  color: #0e98d3; 
+  font-size: .87em;
+  cursor: pointer;
 }
 img.avatar {
 	padding: .7em;
@@ -85,6 +93,7 @@ input#search-bar{
   right: -20px;
   cursor: pointer;
 }
+
 
 
 

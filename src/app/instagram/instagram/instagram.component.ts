@@ -9,7 +9,7 @@ import { InstagramService } from '../instagram.service'
 @Component({
   selector: 'app-instagram',
   templateUrl: './instagram.component.html',
-  styleUrls: ['./instagram.component.css']
+  styleUrls: ['./instagram.component.scss']
 })
 export class InstagramComponent implements OnInit {
 

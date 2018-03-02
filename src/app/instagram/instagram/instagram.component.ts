@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 
 import { InstagramService } from '../instagram.service'
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-instagram',
@@ -14,11 +15,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class InstagramComponent implements OnInit {
 
+  searchQuery: FormGroup;
   basicUserData;
   advancedUserData;
   media: any[] = [];
-  username = 'manutdfotos';
-  loaded=false;
+  username = '';
+  loaded = false;
   stats;
   mostLikedMedia = [];
   mostCommentedMedia = [];
@@ -27,7 +29,7 @@ export class InstagramComponent implements OnInit {
     { key: 'Followers', value: '' },
     { key: 'Following', value: '' }
   ]
-  
+
   engagements = [
     { key: 'Total likes', value: '' },
     { key: 'Total comments', value: '' },
@@ -35,48 +37,58 @@ export class InstagramComponent implements OnInit {
     { key: 'Average comments', value: '' }
   ]
   constructor(private http: HttpClient,
-    private instagramService: InstagramService) {
+    private instagramService: InstagramService,
+    private fb: FormBuilder) {
+    this.createForm();
 
   }
 
   ngOnInit() {
     this.http.get('./assets/mockStats.json')
-    .subscribe(res => {
-      console.log(res)
-      this.stats = res;
-      this.populateStats();
-    })
-    // this.instagramService.getUserByUsername(this.username)
-    // .subscribe((basicUserData) => {
-    //   this.basicUserData = basicUserData;
-    //   console.log(basicUserData)
-    //   this.instagramService.getUserById(this.basicUserData.user.id)
-    //   .subscribe((advancedUserData) => {
-    //     this.advancedUserData = advancedUserData
-    //     console.log(advancedUserData)
-    //     this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6)
-    //     this.populateStats()
-    //     console.log(this.stats)
-    //     console.log(this.stats.website)
-    //   })
-    // })
-    
+      .subscribe(res => {
+        console.log(res)
+        this.stats = res;
+        this.populateStats();
+      })
+  }
+  createForm() {
+    this.searchQuery = this.fb.group({
+      username: ['', Validators.required],
+    });
   }
 
-  populateStats()
-  {
+  populateStats() {
     this.summary[0].value = this.stats.posts;
     this.summary[1].value = this.stats.followers;
     this.summary[2].value = this.stats.following;
-    
+
     this.engagements[0].value = this.stats.totalLikes;
     this.engagements[1].value = this.stats.totalComments;
     this.engagements[2].value = this.stats.averageLikes;
     this.engagements[3].value = this.stats.averageComments;
-  
+
     this.mostLikedMedia = this.stats.mostLikedMedia;
     this.mostCommentedMedia = this.stats.mostCommentedMedia;
     this.loaded = true;
+  }
+
+  search() {
+    this.username = this.searchQuery.value.username;
+    console.log(this.username)
+    this.instagramService.getUserByUsername(this.username)
+    .subscribe((basicUserData) => {
+      this.basicUserData = basicUserData;
+      console.log(basicUserData)
+      this.instagramService.getUserById(this.basicUserData.user.id)
+      .subscribe((advancedUserData) => {
+        this.advancedUserData = advancedUserData
+        console.log(advancedUserData)
+        this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6)
+        this.populateStats()
+        console.log(this.stats)
+        console.log(this.stats.website)
+      })
+    })
   }
 
 }

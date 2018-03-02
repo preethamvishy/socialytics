@@ -95,7 +95,10 @@ export class InstagramComponent implements OnInit {
   }
   externalUrl(url) {
     var shell = this.electronService.shell;
-    shell.openExternal(url);
+    if(shell) 
+      shell.openExternal(url);
+    else 
+      window.open(url);
   }
   
 }

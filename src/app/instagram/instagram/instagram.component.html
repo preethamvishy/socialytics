@@ -1,6 +1,6 @@
 <form [formGroup]="searchQuery" class="search-container">
   <input type="text" id="search-bar" placeholder="Instagram username" class="form-control" formControlName="username" (submit)="search()">
-  <a >
+  <a>
     <img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png" (click)="search()">
   </a>
 </form>
@@ -18,8 +18,8 @@
             <div class="bio">
               {{stats.bio}}
             </div>
-            <div class="bio">
-              <a [href]="stats.website">{{stats.website}}</a>
+            <div class="website">
+              <a (click)="externalUrl(stats.website)" target="_blank">{{stats.website}}</a>
             </div>
           </div>
         </div>

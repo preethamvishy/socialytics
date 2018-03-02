@@ -7,7 +7,8 @@ import 'rxjs/add/operator/map';
 import { InstagramService } from '../instagram.service'
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { ElectronService } from 'ngx-electron';
+ 
 @Component({
   selector: 'app-instagram',
   templateUrl: './instagram.component.html',
@@ -38,8 +39,10 @@ export class InstagramComponent implements OnInit {
   ]
   constructor(private http: HttpClient,
     private instagramService: InstagramService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private electronService: ElectronService) {
     this.createForm();
+
 
   }
 
@@ -76,19 +79,23 @@ export class InstagramComponent implements OnInit {
     this.username = this.searchQuery.value.username;
     console.log(this.username)
     this.instagramService.getUserByUsername(this.username)
-    .subscribe((basicUserData) => {
-      this.basicUserData = basicUserData;
-      console.log(basicUserData)
-      this.instagramService.getUserById(this.basicUserData.user.id)
-      .subscribe((advancedUserData) => {
-        this.advancedUserData = advancedUserData
-        console.log(advancedUserData)
-        this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6)
-        this.populateStats()
-        console.log(this.stats)
-        console.log(this.stats.website)
+      .subscribe((basicUserData) => {
+        this.basicUserData = basicUserData;
+        console.log(basicUserData)
+        this.instagramService.getUserById(this.basicUserData.user.id)
+          .subscribe((advancedUserData) => {
+            this.advancedUserData = advancedUserData
+            console.log(advancedUserData)
+            this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6)
+            this.populateStats()
+            console.log(this.stats)
+            console.log(this.stats.website)
+          })
       })
-    })
   }
-
+  externalUrl(url) {
+    var shell = this.electronService.shell;
+    shell.openExternal(url);
+  }
+  
 }

@@ -55,6 +55,8 @@ export class InstagramService {
         id: user.id,
         bio: user.biography,
         website: user.external_url,
+        profilePicture: user.profile_pic_url,
+        profilePictureHD: user.profile_pic_url_hd,
         followers: user.followed_by.count,
         following: user.follows.count,
         posts: user.media.count,
@@ -66,7 +68,8 @@ export class InstagramService {
         averageEngagements: ((likes + comments) / count),
         mostLikedMedia: mostLikedMedia,
         mostCommentedMedia: mostCommentedMedia,
-        success: true
+        success: true,
+        
     }
 }
 

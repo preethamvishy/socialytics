@@ -1,5 +1,26 @@
 <div *ngIf="loaded==true" class="container">
-  <div class="row">
+<div class="row">
+  <div class="profile">
+    <div class="col-md-12">
+      <div>
+        <div class="card-body">
+          <img class="avatar" [src]="stats.profilePictureHD" />
+          <div class="name">{{stats.name}}</div>
+          <div class="username">
+            @{{stats.username}}
+          </div>
+          <div class="bio">
+            {{stats.bio}}
+          </div>
+          <div class="bio">
+            <a [href]="stats.website">{{stats.website}}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div [style.margin-top.px]="'25'" class="row">
     <div *ngFor="let item of summary" class="col-md-4">
       <div class="card mb-4 box-shadow">
         <div class="card-body text-center">
@@ -17,6 +38,7 @@
           <small>{{item.key}}</small>
           <h2 class="card-text">{{item.value}}
           </h2>
+          <small style="font-size: 10px">(based on 50 latest posts)</small>
         </div>
       </div>
     </div>
@@ -25,56 +47,32 @@
     <div class="col-md-6">
       <div class="card mb-4 box-shadow">
         <div class="card-body text-center">
-          <small>Total activity</small>
-          <div style="display: block">
-            <canvas baseChart [data]="averageChartData" [labels]="averageChartLabels" [chartType]="averageChartType" [options]="averageChartOptions"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-            </canvas>
+          <h6 class="text-center">Most Liked Media</h6>
+          <div class="row">
+            <div *ngFor="let media of mostLikedMedia" class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" [src]="media.node.display_url" />
+              </div>
+            </div>
           </div>
+          <small style="font-size: 10px">(based on 50 latest posts)</small>
         </div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="card mb-4 box-shadow">
         <div class="card-body text-center">
-          <small>Average activity</small>
-          <div style="display: block">
-            <canvas baseChart [data]="averageChartData" [labels]="averageChartLabels" [chartType]="averageChartType" [options]="averageChartOptions"
-              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-            </canvas>
+          <h6 class="text-center">Most Commented Media</h6>
+          <div class="row">
+            <div *ngFor="let media of mostCommentedMedia" class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" [src]="media.node.display_url" />
+              </div>
+            </div>
           </div>
+          <small style="font-size: 10px">(based on 50 latest posts)</small>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6">
-        <div class="card mb-4 box-shadow">
-          <div class="card-body text-center">
-            <h6 class="text-center">Most Liked Media</h6>
-            <div class="row">
-              <div *ngFor="let media of mostLikedMedia" class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                  <img class="card-img-top" [src]="media.node.display_url">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card mb-4 box-shadow">
-          <div class="card-body text-center">
-            <h6 class="text-center">Most Commented Media</h6>
-            <div class="row">
-              <div *ngFor="let media of mostLikedMedia" class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                  <img class="card-img-top" [src]="media.node.display_url">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
     </div>
   </div>
 </div>

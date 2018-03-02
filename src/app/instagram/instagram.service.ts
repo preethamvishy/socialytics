@@ -21,7 +21,7 @@ export class InstagramService {
       .map(res => res)
   }
 
-  getStats (media, user, username, topCount = 5) {
+  getStats (media, user, username, topCount = 6) {
     var mediaArray = media,
                     comments = 0,
                     likes = 0,

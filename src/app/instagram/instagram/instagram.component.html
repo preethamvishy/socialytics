@@ -1,8 +1,80 @@
-<div *ngIf="loaded == true" style="display: block">
-  <canvas baseChart
-              [data]="averageChartData"
-              [labels]="averageChartLabels"
-              [chartType]="averageChartType"
-              (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
+<div *ngIf="loaded==true" class="container">
+  <div class="row">
+    <div *ngFor="let item of summary" class="col-md-4">
+      <div class="card mb-4 box-shadow">
+        <div class="card-body text-center">
+          <small>{{item.key}}</small>
+          <h2 class="card-text">{{item.value}}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngFor="let item of engagements" class="col-md-3">
+      <div class="card mb-4 box-shadow">
+        <div class="card-body text-center">
+          <small>{{item.key}}</small>
+          <h2 class="card-text">{{item.value}}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4 box-shadow">
+        <div class="card-body text-center">
+          <small>Total activity</small>
+          <div style="display: block">
+            <canvas baseChart [data]="averageChartData" [labels]="averageChartLabels" [chartType]="averageChartType" [options]="averageChartOptions"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card mb-4 box-shadow">
+        <div class="card-body text-center">
+          <small>Average activity</small>
+          <div style="display: block">
+            <canvas baseChart [data]="averageChartData" [labels]="averageChartLabels" [chartType]="averageChartType" [options]="averageChartOptions"
+              (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4 box-shadow">
+          <div class="card-body text-center">
+            <h6 class="text-center">Most Liked Media</h6>
+            <div class="row">
+              <div *ngFor="let media of mostLikedMedia" class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                  <img class="card-img-top" [src]="media.node.display_url">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4 box-shadow">
+          <div class="card-body text-center">
+            <h6 class="text-center">Most Commented Media</h6>
+            <div class="row">
+              <div *ngFor="let media of mostLikedMedia" class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                  <img class="card-img-top" [src]="media.node.display_url">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
 </div>

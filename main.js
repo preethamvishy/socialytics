@@ -7,8 +7,13 @@ let win = null;
 
 app.on('ready', function () {
 
-    win = new BrowserWindow({ width: 600, height: 600 });
-   
+    win = new BrowserWindow({
+        height: '600px',
+        width: '800px',
+    });
+
+    win.maximize();
+
     if (process.env.PACKAGE === 'true') {
         win.loadURL(url.format({
             pathname: path.join(__dirname, 'dist/index.html'),
@@ -20,12 +25,6 @@ app.on('ready', function () {
         win.webContents.openDevTools();
     }
 
-
-    
-
-    // Show dev tools
-    // Remove this line before distributing
-    win.webContents.openDevTools()
     win.on('closed', function () {
         win = null;
     });

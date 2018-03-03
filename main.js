@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 require('dotenv').config();
+exports.instalytics = require('instalytics');
 
 let win = null;
 
@@ -42,3 +43,4 @@ app.on('window-all-closed', function () {
         app.quit();
     }
 });
+

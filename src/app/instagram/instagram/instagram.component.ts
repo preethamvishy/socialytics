@@ -106,4 +106,24 @@ export class InstagramComponent implements OnInit {
           })
       })
   }
+  useInstalyicsQuickStats()
+  {
+    this.electronService.remote.require('./main.js').instalytics.getQuickStats(this.username, 6)
+    .then(
+      res => {
+        this.stats = res;
+        this.populateStats();
+      }      
+    );  
+  }
+  useInstalyicsFullStats()
+  {
+    this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6)
+    .then(
+      res => {
+        this.stats = res;
+        this.populateStats();
+      }      
+    );  
+  }
 }

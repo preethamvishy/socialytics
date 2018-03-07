@@ -42,13 +42,6 @@ export class InstagramService {
     averageLikes = likes / count;
     averageComments = comments / count;
 
-    console.log(`@${username} summary for the last ${count} posts:`)
-    console.log('Total likes:           ' + likes)
-    console.log('Total comments:        ' + comments)
-    console.log('Total engagements:     ' + (likes + comments))
-    console.log('Average likes:         ' + averageLikes)
-    console.log('Average comments:      ' + averageComments)
-    console.log('Average engagements:   ' + (likes + comments) / count)
     return {
         username: username,
         name: user.full_name,

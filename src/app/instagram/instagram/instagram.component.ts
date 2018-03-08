@@ -8,7 +8,7 @@ import { InstagramService } from '../instagram.service'
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ElectronService } from 'ngx-electron';
- 
+
 @Component({
   selector: 'app-instagram',
   templateUrl: './instagram.component.html',
@@ -46,7 +46,7 @@ export class InstagramComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
   createForm() {
     this.searchQuery = this.fb.group({
@@ -77,13 +77,12 @@ export class InstagramComponent implements OnInit {
   }
   externalUrl(url) {
     var shell = this.electronService.shell;
-    if(shell) 
+    if (shell)
       shell.openExternal(url);
-    else 
+    else
       window.open(url);
   }
-  getMockData()
-  {
+  getMockData() {
     this.http.get('./assets/mockStats.json')
       .subscribe(res => {
         console.log(res)
@@ -107,24 +106,22 @@ export class InstagramComponent implements OnInit {
           })
       })
   }
-  useInstalyicsQuickStats()
-  {
+  useInstalyicsQuickStats() {
     this.electronService.remote.require('./main.js').instalytics.getQuickStats(this.username, 6)
-    .then(
+      .then(
       res => {
         this.stats = res;
         this.populateStats();
-      }      
-    );  
+      }
+      );
   }
-  useInstalyicsFullStats()
-  {
+  useInstalyicsFullStats() {
     this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6)
-    .then(
+      .then(
       res => {
         this.stats = res;
         this.populateStats();
-      }      
-    );  
+      }
+      );
   }
 }

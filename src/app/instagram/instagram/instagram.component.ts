@@ -73,6 +73,7 @@ export class InstagramComponent implements OnInit {
     this.username = this.searchQuery.value.username;
     console.log(this.username)
     this.getUserData();
+    // this.getMockData()
   }
   externalUrl(url) {
     var shell = this.electronService.shell;

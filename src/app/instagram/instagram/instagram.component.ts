@@ -38,6 +38,9 @@ export class InstagramComponent implements OnInit {
     { key: 'Average comments', value: '' }
   ]
 
+  sampleSize;
+  statMethod;
+
   constructor(private http: HttpClient,
     private instagramService: InstagramService,
     private fb: FormBuilder,
@@ -66,6 +69,7 @@ export class InstagramComponent implements OnInit {
 
     this.mostLikedMedia = this.stats.mostLikedMedia;
     this.mostCommentedMedia = this.stats.mostCommentedMedia;
+    this.sampleSize = (this.statMethod == 'full') ? this.stats.post : ((this.stats.posts < 50 ? this.stats.post : '50 latest'));
     this.loaded = true;
   }
 
@@ -74,6 +78,8 @@ export class InstagramComponent implements OnInit {
     console.log(this.username)
     this.getUserData();
     // this.getMockData()
+    // this.getFullStats();
+    // this.getQuickStats();   //recommened
   }
   externalUrl(url) {
     var shell = this.electronService.shell;
@@ -87,6 +93,7 @@ export class InstagramComponent implements OnInit {
       .subscribe(res => {
         console.log(res)
         this.stats = res;
+        this.statMethod = 'quick'
         this.populateStats();
       })
   }
@@ -100,25 +107,30 @@ export class InstagramComponent implements OnInit {
             this.advancedUserData = advancedUserData
             console.log(advancedUserData)
             this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6)
+            this.statMethod = 'quick'
             this.populateStats()
+
             console.log(this.stats)
             console.log(this.stats.website)
           })
       })
   }
-  useInstalyicsQuickStats() {
+  getQuickStats() {
     this.electronService.remote.require('./main.js').instalytics.getQuickStats(this.username, 6)
       .then(
       res => {
         this.stats = res;
+        this.statMethod = 'quick'
         this.populateStats();
+
       }
       );
   }
-  useInstalyicsFullStats() {
+  getFullStats() {
     this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6)
       .then(
       res => {
+        this.statMethod = 'full'
         this.stats = res;
         this.populateStats();
       }

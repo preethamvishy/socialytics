@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
-import { InstagramService } from '../instagram.service'
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ElectronService } from 'ngx-electron';
+import { InstagramService } from '../instagram.service'
 
 @Component({
   selector: 'app-instagram',
@@ -57,29 +57,12 @@ export class InstagramComponent implements OnInit {
     });
   }
 
-  populateStats() {
-    this.summary[0].value = this.stats.posts;
-    this.summary[1].value = this.stats.followers;
-    this.summary[2].value = this.stats.following;
-
-    this.engagements[0].value = this.stats.totalLikes;
-    this.engagements[1].value = this.stats.totalComments;
-    this.engagements[2].value = this.stats.averageLikes;
-    this.engagements[3].value = this.stats.averageComments;
-
-    this.mostLikedMedia = this.stats.mostLikedMedia;
-    this.mostCommentedMedia = this.stats.mostCommentedMedia;
-    this.sampleSize = (this.statMethod == 'full') ? this.stats.post : ((this.stats.posts < 50 ? this.stats.post : '50 latest'));
-    this.loaded = true;
-  }
-
   search() {
     this.username = this.searchQuery.value.username;
-    console.log(this.username)
     this.getUserData();
     // this.getMockData()
     // this.getFullStats();
-    // this.getQuickStats();   //recommened
+    // this.getQuickStats();   //recommended
   }
   externalUrl(url) {
     var shell = this.electronService.shell;
@@ -91,9 +74,8 @@ export class InstagramComponent implements OnInit {
   getMockData() {
     this.http.get('./assets/mockStats.json')
       .subscribe(res => {
-        console.log(res)
         this.stats = res;
-        this.statMethod = 'quick'
+        this.statMethod = 'quick';
         this.populateStats();
       })
   }
@@ -101,17 +83,12 @@ export class InstagramComponent implements OnInit {
     this.instagramService.getUserByUsername(this.username)
       .subscribe((basicUserData) => {
         this.basicUserData = basicUserData;
-        console.log(basicUserData)
         this.instagramService.getUserById(this.basicUserData.user.id)
           .subscribe((advancedUserData) => {
             this.advancedUserData = advancedUserData
-            console.log(advancedUserData)
-            this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6)
-            this.statMethod = 'quick'
-            this.populateStats()
-
-            console.log(this.stats)
-            console.log(this.stats.website)
+            this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6);
+            this.statMethod = 'quick';
+            this.populateStats();
           })
       })
   }
@@ -133,7 +110,22 @@ export class InstagramComponent implements OnInit {
         this.statMethod = 'full'
         this.stats = res;
         this.populateStats();
-      }
-      );
+      });
+  }
+  
+  populateStats() {
+    this.summary[0].value = this.stats.posts;
+    this.summary[1].value = this.stats.followers;
+    this.summary[2].value = this.stats.following;
+
+    this.engagements[0].value = this.stats.totalLikes;
+    this.engagements[1].value = this.stats.totalComments;
+    this.engagements[2].value = this.stats.averageLikes;
+    this.engagements[3].value = this.stats.averageComments;
+
+    this.mostLikedMedia = this.stats.mostLikedMedia;
+    this.mostCommentedMedia = this.stats.mostCommentedMedia;
+    this.sampleSize = (this.statMethod == 'full') ? this.stats.posts : ((this.stats.posts < 50 ? this.stats.posts : '50 latest'));
+    this.loaded = true;
   }
 }

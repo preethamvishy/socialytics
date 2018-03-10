@@ -1,5 +1,5 @@
 <form [formGroup]="searchQuery" class="search-container" (submit)="search()" >
-  <input type="text" id="search-bar" placeholder="Instagram username" class="form-control" formControlName="username" (submit)="search()">
+  <input type="text" id="search-bar" placeholder="Instagram username" class="form-control" [(ngModel)]="username" formControlName="username" (submit)="search()">
   <a>
     <img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png" (click)="search()">
   </a>

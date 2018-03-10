@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { InstagramModule } from './instagram/instagram.module'
 import { HttpClientModule } from '@angular/common/http';
 
-import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,6 @@ import { ChartsModule } from 'ng2-charts';
     BrowserModule,
     RouterModule.forRoot(APP_ROUTES),
     InstagramModule,
-    ChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

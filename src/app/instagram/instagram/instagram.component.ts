@@ -59,9 +59,9 @@ export class InstagramComponent implements OnInit {
 
   search() {
     this.username = this.searchQuery.value.username;
-    this.getUserData();
+    // this.getUserData();
     // this.getMockData()
-    // this.getFullStats();
+    this.getFullStats();
     // this.getQuickStats();   //recommended
   }
   externalUrl(url) {

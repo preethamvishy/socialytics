@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ElectronService } from 'ngx-electron';
 import { InstagramService } from '../instagram.service'
+
 
 @Component({
   selector: 'app-instagram',
@@ -44,12 +46,22 @@ export class InstagramComponent implements OnInit {
   constructor(private http: HttpClient,
     private instagramService: InstagramService,
     private fb: FormBuilder,
-    private electronService: ElectronService) {
+    private electronService: ElectronService,
+    private route: ActivatedRoute,
+    private router: Router) {
     this.createForm();
   }
 
   ngOnInit() {
+    this.route
+    .queryParams
+    .subscribe(params => {
+      this.username = params['user'] || '';
+      if(this.username.length > 0)
+        this.search();
+    });
 
+    
   }
   createForm() {
     this.searchQuery = this.fb.group({
@@ -58,11 +70,17 @@ export class InstagramComponent implements OnInit {
   }
 
   search() {
-    this.username = this.searchQuery.value.username;
-    // this.getUserData();
+    if(this.username.length <= 0)    
+      this.username = this.searchQuery.value.username;
+      
+    else {
+    this.getUserData();
     // this.getMockData()
-    this.getFullStats();
+    // this.getFullStats();
     // this.getQuickStats();   //recommended
+    
+    this.router.navigate(['instagram'], { queryParams: { user: this.username} });
+    }
   }
   externalUrl(url) {
     var shell = this.electronService.shell;

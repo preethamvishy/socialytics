@@ -71,15 +71,15 @@ export class InstagramComponent implements OnInit {
 
   search() {
     if(this.username.length <= 0)    
-      this.username = this.searchQuery.value.username;
+      this.username = this.searchQuery.value.username.trim();
       
     else {
-    this.getUserData();
+    // this.getUserData();
     // this.getMockData()
-    // this.getFullStats();
+    this.getFullStats();
     // this.getQuickStats();   //recommended
     
-    this.router.navigate(['instagram'], { queryParams: { user: this.username} });
+    this.router.navigate(['instagram'], { queryParams: { user: this.username.trim()} });
     }
   }
   externalUrl(url) {
@@ -122,7 +122,7 @@ export class InstagramComponent implements OnInit {
       );
   }
   getFullStats() {
-    this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6)
+    this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6, 30000)
       .then(
       res => {
         this.statMethod = 'full'

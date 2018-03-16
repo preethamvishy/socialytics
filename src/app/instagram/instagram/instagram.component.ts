@@ -74,9 +74,9 @@ export class InstagramComponent implements OnInit {
       this.username = this.searchQuery.value.username.trim();
       
     else {
-    // this.getUserData();
+    this.getUserData();
     // this.getMockData()
-    this.getFullStats();
+    // this.getFullStats();
     // this.getQuickStats();   //recommended
     
     this.router.navigate(['instagram'], { queryParams: { user: this.username.trim()} });
@@ -101,10 +101,10 @@ export class InstagramComponent implements OnInit {
     this.instagramService.getUserByUsername(this.username)
       .subscribe((basicUserData) => {
         this.basicUserData = basicUserData;
-        this.instagramService.getUserById(this.basicUserData.user.id)
+        this.instagramService.getUserById(this.basicUserData.graphql.user.id)
           .subscribe((advancedUserData) => {
             this.advancedUserData = advancedUserData
-            this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.user, this.username, 6);
+            this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.graphql.user, this.username, 6);
             this.statMethod = 'quick';
             this.populateStats();
           })

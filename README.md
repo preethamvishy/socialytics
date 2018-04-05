@@ -1,5 +1,5 @@
 # Socialytics
-A native desktop app for Instagram analytics. Built using Angular 5 and Electron.
+A web and native desktop app for Instagram analytics. Quick 🚀 and actionable insights built using Angular 5 and Electron.
 
 ![Socialytics](https://i.imgur.com/gQGEzuN.jpg)
 
@@ -9,4 +9,5 @@ A native desktop app for Instagram analytics. Built using Angular 5 and Electron
 
 1. Clone the repo.
 2. Run `npm install`to install the dependencies.
-3. Run `ng build && electron .`to the app
+3. Run `ng build && electron .`to build and run the app as an electron app.
+    Alternatively, run `ng serve` and navigate to `localhost:4200`.

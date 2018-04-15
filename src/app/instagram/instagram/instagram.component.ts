@@ -120,6 +120,7 @@ export class InstagramComponent implements OnInit {
     this.http.get('https://www.instagram.com/' + this.username)
       .subscribe((data) => {
         var userData = JSON.parse(data['_body'].split('"ProfilePage":[')[1].split(']},"gatekeepers"')[0])
+        this.basicUserData = userData
         this.stats = this.instagramService.getStats(userData.graphql.user.edge_owner_to_timeline_media.edges, userData.graphql.user, this.username, 6);
         this.statMethod = 'quick';
         this.populateStats();
@@ -156,7 +157,7 @@ export class InstagramComponent implements OnInit {
 
     this.mostLikedMedia = this.stats.mostLikedMedia;
     this.mostCommentedMedia = this.stats.mostCommentedMedia;
-    this.sampleSize = (this.statMethod == 'full') ? this.stats.posts : ((this.stats.posts < 50 ? this.stats.posts : '50 latest'));
+    this.sampleSize = this.basicUserData.graphql.user.edge_owner_to_timeline_media.edges.length;
     this.loaded = true;
   }
 }

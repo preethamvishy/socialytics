@@ -8,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { NgxElectronModule } from 'ngx-electron';
+import { HttpModule, Http } from '@angular/http';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { NgxElectronModule } from 'ngx-electron';
     ChartsModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxElectronModule
+    NgxElectronModule,
+    HttpModule
   ],
   declarations: [InstagramComponent],
   exports: [InstagramComponent],

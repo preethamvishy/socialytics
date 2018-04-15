@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ElectronService } from 'ngx-electron';
 import { InstagramService } from '../instagram.service'
+import { Http } from '@angular/http';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class InstagramComponent implements OnInit {
   sampleSize;
   statMethod;
 
-  constructor(private http: HttpClient,
+  constructor(private http: Http,
     private instagramService: InstagramService,
     private fb: FormBuilder,
     private electronService: ElectronService,
@@ -97,17 +98,31 @@ export class InstagramComponent implements OnInit {
         this.populateStats();
       })
   }
+ 
+  //this is the logic that usually works but has not been reliable since Instagram started making changes to it s API endpoints in April 2018
+  // getUserData() {
+  //   this.instagramService.getUserByUsername(this.username)
+  //     .subscribe((basicUserData) => {
+  //       this.basicUserData = basicUserData;
+  //       this.instagramService.getUserById(this.basicUserData.graphql.user.id)
+  //         .subscribe((advancedUserData) => {
+  //           this.advancedUserData = advancedUserData
+  //           this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.graphql.user, this.username, 6);
+  //           this.statMethod = 'quick';
+  //           this.populateStats();
+  //         })
+  //     })
+  // }
+
+
+  //temporary workaround while Instagram's API endpoints are unstable
   getUserData() {
-    this.instagramService.getUserByUsername(this.username)
-      .subscribe((basicUserData) => {
-        this.basicUserData = basicUserData;
-        this.instagramService.getUserById(this.basicUserData.graphql.user.id)
-          .subscribe((advancedUserData) => {
-            this.advancedUserData = advancedUserData
-            this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.graphql.user, this.username, 6);
-            this.statMethod = 'quick';
-            this.populateStats();
-          })
+    this.http.get('https://www.instagram.com/' + this.username)
+      .subscribe((data) => {
+        var userData = JSON.parse(data['_body'].split('"ProfilePage":[')[1].split(']},"gatekeepers"')[0])
+        this.stats = this.instagramService.getStats(userData.graphql.user.edge_owner_to_timeline_media.edges, userData.graphql.user, this.username, 6);
+        this.statMethod = 'quick';
+        this.populateStats();
       })
   }
   getQuickStats() {
@@ -117,9 +132,7 @@ export class InstagramComponent implements OnInit {
         this.stats = res;
         this.statMethod = 'quick'
         this.populateStats();
-
-      }
-      );
+      });
   }
   getFullStats() {
     this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6, 30000)

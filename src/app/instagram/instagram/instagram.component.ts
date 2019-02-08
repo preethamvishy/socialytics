@@ -11,6 +11,7 @@ import { ElectronService } from 'ngx-electron';
 import { InstagramService } from '../instagram.service'
 import { Http } from '@angular/http';
 
+declare var $: any;
 
 @Component({
   selector: 'app-instagram',
@@ -43,6 +44,7 @@ export class InstagramComponent implements OnInit {
 
   sampleSize;
   statMethod;
+  expandPost = null;
 
   constructor(private http: Http,
     private instagramService: InstagramService,
@@ -55,14 +57,14 @@ export class InstagramComponent implements OnInit {
 
   ngOnInit() {
     this.route
-    .queryParams
-    .subscribe(params => {
-      this.username = params['user'] || '';
-      if(this.username.length > 0)
-        this.search();
-    });
+      .queryParams
+      .subscribe(params => {
+        this.username = params['user'] || '';
+        if (this.username.length > 0)
+          this.search();
+      });
 
-    
+
   }
   createForm() {
     this.searchQuery = this.fb.group({
@@ -71,16 +73,16 @@ export class InstagramComponent implements OnInit {
   }
 
   search() {
-    if(this.username.length <= 0)    
+    if (this.username.length <= 0)
       this.username = this.searchQuery.value.username.trim();
-      
+
     else {
-    this.getUserData();
-    // this.getMockData()
-    // this.getFullStats();
-    // this.getQuickStats();   //recommended
-    
-    this.router.navigate(['instagram'], { queryParams: { user: this.username.trim()} });
+      this.getUserData();
+      // this.getMockData()
+      // this.getFullStats();
+      // this.getQuickStats();   //recommended
+
+      this.router.navigate(['instagram'], { queryParams: { user: this.username.trim() } });
     }
   }
   externalUrl(url) {
@@ -98,7 +100,7 @@ export class InstagramComponent implements OnInit {
         this.populateStats();
       })
   }
- 
+
   //this is the logic that usually works but has not been reliable since Instagram started making changes to it s API endpoints in April 2018
   // getUserData() {
   //   this.instagramService.getUserByUsername(this.username)
@@ -129,22 +131,22 @@ export class InstagramComponent implements OnInit {
   getQuickStats() {
     this.electronService.remote.require('./main.js').instalytics.getQuickStats(this.username, 6)
       .then(
-      res => {
-        this.stats = res;
-        this.statMethod = 'quick'
-        this.populateStats();
-      });
+        res => {
+          this.stats = res;
+          this.statMethod = 'quick'
+          this.populateStats();
+        });
   }
   getFullStats() {
     this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6, 30000)
       .then(
-      res => {
-        this.statMethod = 'full'
-        this.stats = res;
-        this.populateStats();
-      });
+        res => {
+          this.statMethod = 'full'
+          this.stats = res;
+          this.populateStats();
+        });
   }
-  
+
   populateStats() {
     this.summary[0].value = this.stats.posts;
     this.summary[1].value = this.stats.followers;
@@ -159,5 +161,11 @@ export class InstagramComponent implements OnInit {
     this.mostCommentedMedia = this.stats.mostCommentedMedia;
     this.sampleSize = this.basicUserData.graphql.user.edge_owner_to_timeline_media.edges.length;
     this.loaded = true;
+  }
+
+  toggleModal(media) {
+    console.log(media)
+    $("#postExpand").modal("toggle");
+    this.expandPost = media
   }
 }

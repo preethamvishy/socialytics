@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway|Varela+Round|Coda);
 @import url(https://fonts.googleapis.com/css?family=Armata|Economica);
 
-* {
+*:not(.fas) {
   font-family: "Armata";
 }
 
@@ -141,4 +141,9 @@ opacity: 0.8;
 }
 h6 {
   margin: 0;
+}
+
+.right-space {
+  margin-right: 15px;
+  margin-left: 55px;
 }

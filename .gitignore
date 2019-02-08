@@ -62,5 +62,6 @@ typings/
 */.DS_Store
 package-lock.json
 e2e
-dist
+./dist
 socialytics-darwin-x64
+*/node_modules

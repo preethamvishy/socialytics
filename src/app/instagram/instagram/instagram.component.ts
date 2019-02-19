@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import { catchError } from 'rxjs/operators';
+
+
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,7 +49,7 @@ export class InstagramComponent implements OnInit {
   statMethod;
   expandPost = null;
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
     private instagramService: InstagramService,
     private fb: FormBuilder,
     private electronService: ElectronService,
@@ -119,15 +122,16 @@ export class InstagramComponent implements OnInit {
 
   //temporary workaround while Instagram's API endpoints are unstable
   getUserData() {
-    this.http.get('https://www.instagram.com/' + this.username)
-      .subscribe((data) => {
-        var userData = JSON.parse(data['_body'].split('"ProfilePage":[')[1].split(']},"gatekeepers"')[0])
-        this.basicUserData = userData
-        this.stats = this.instagramService.getStats(userData.graphql.user.edge_owner_to_timeline_media.edges, userData.graphql.user, this.username, 6);
-        this.statMethod = 'quick';
-        this.populateStats();
-      })
+      this.http.get('https://www.instagram.com/' + this.username)
+        .subscribe((data) => {
+          var userData = JSON.parse(data['_body'].split('"ProfilePage":[')[1].split(']},"gatekeepers"')[0])
+          this.basicUserData = userData
+          this.stats = this.instagramService.getStats(userData.graphql.user.edge_owner_to_timeline_media.edges, userData.graphql.user, this.username, 6);
+          this.statMethod = 'quick';
+          this.populateStats();
+        })
   }
+
   getQuickStats() {
     this.electronService.remote.require('./main.js').instalytics.getQuickStats(this.username, 6)
       .then(
@@ -137,6 +141,7 @@ export class InstagramComponent implements OnInit {
           this.populateStats();
         });
   }
+
   getFullStats() {
     this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6, 30000)
       .then(
@@ -164,8 +169,12 @@ export class InstagramComponent implements OnInit {
   }
 
   toggleModal(media) {
-    console.log(media)
     $("#postExpand").modal("toggle");
     this.expandPost = media
+  }
+
+  handleError() {
+    $("#error").modal("toggle");
+    return 'Some error occured'
   }
 }

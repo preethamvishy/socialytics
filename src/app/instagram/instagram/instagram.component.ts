@@ -122,14 +122,28 @@ export class InstagramComponent implements OnInit {
 
   //temporary workaround while Instagram's API endpoints are unstable
   getUserData() {
-      this.http.get('https://www.instagram.com/' + this.username)
-        .subscribe((data) => {
-          var userData = JSON.parse(data['_body'].split('"ProfilePage":[')[1].split(']},"gatekeepers"')[0])
-          this.basicUserData = userData
-          this.stats = this.instagramService.getStats(userData.graphql.user.edge_owner_to_timeline_media.edges, userData.graphql.user, this.username, 6);
-          this.statMethod = 'quick';
-          this.populateStats();
-        })
+
+    var body = new HttpParams()
+      .set('username', this.username)
+
+    this.http.post(`https://ig-server.herokuapp.com/user`, body.toString(),
+      {
+        headers: new HttpHeaders()
+          .append('Content-Type', 'application/json')
+          .append('Access-Control-Allow-Origin', '*')
+          .append("Access-Control-Allow-Headers", "*")
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    ).pipe(
+      catchError(this.handleError)
+    )
+      .subscribe((data) => {
+        var userData = data;
+        this.basicUserData = userData
+        this.stats = this.instagramService.getStats(userData['graphql'].user.edge_owner_to_timeline_media.edges, userData['graphql'].user, this.username, 6);
+        this.statMethod = 'quick';
+        this.populateStats();
+      })
   }
 
   getQuickStats() {

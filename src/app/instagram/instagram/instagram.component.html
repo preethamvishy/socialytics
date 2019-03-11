@@ -41,7 +41,7 @@
       <div class="card mb-4 box-shadow">
         <div class="card-body text-center">
           <small>{{item.key}}</small>
-          <h2 class="card-text">{{item.value | number: '2.'}}
+          <h2 class="card-text">{{item.value | number: '1.'}}
           </h2>
         </div>
       </div>
@@ -52,7 +52,7 @@
       <div class="card mb-4 box-shadow">
         <div class="card-body text-center">
           <small>{{item.key}}</small>
-          <h2 class="card-text">{{item.value | number: '2.'}}
+          <h2 class="card-text">{{item.value | number: '1.'}}
           </h2>
           <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
         </div>
@@ -60,7 +60,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12 col-lg-6">
       <div class="card mb-4 box-shadow">
         <div class="card-header text-center">
           <h6 class="text-center">Most Liked Media</h6>
@@ -72,7 +72,7 @@
                 <div class="overlay" (click)="toggleModal(media)">
                   <div class="text">
                     <i class="fas fa-heart"></i>
-                    {{media.node.edge_media_preview_like.count | number: '2.'}}
+                    {{media.node.edge_media_preview_like.count | number: '1.'}}
                     <br />likes
                   </div>
                 </div>
@@ -85,7 +85,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12 col-lg-6">
       <div class="card mb-4 box-shadow">
         <div class="card-header text-center">
           <h6 class="text-center">Most Commented Media</h6>
@@ -97,7 +97,7 @@
                 <div class="overlay" (click)="toggleModal(media)">
                   <div class="text">
                     <i class="fas fa-comment"></i>
-                    {{media.node.edge_media_to_comment.count | number: '2.'}}
+                    {{media.node.edge_media_to_comment.count | number: '1.'}}
                     <br />comments
                   </div>
                 </div>
@@ -114,7 +114,6 @@
   <p style="font-size: 9px;">*Instagram has closed several public endpoints in April 2018. Development in progress to
     account for this and crunch out detailed analytics.</p>
 </div>
-
 
 
 <div class="modal fade" id="postExpand" tabindex="-1" role="dialog" aria-labelledby="postExpandTitle"
@@ -135,10 +134,10 @@
             <div>
               <span class="right-space">
                 <i class="fas fa-heart"></i>
-                {{expandPost.node.edge_media_preview_like.count  | number: '2.'}}
+                {{expandPost.node.edge_media_preview_like.count  | number: '1.'}}
               </span>
               <i class="fas fa-comment"></i>
-              {{expandPost.node.edge_media_to_comment.count  | number: '2.'}}
+              {{expandPost.node.edge_media_to_comment.count  | number: '1.'}}
             </div>
           </div>
         </div>
@@ -152,8 +151,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="errorTitle"
-  aria-hidden="true">
+<div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="errorTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <ng-container>
       <div class="modal-content">
@@ -164,7 +162,7 @@
           </button>
         </div>
         <div class="modal-body container">
-          Looks like the username is invalid or Instagram is blocking our request. The developer has been notified.
+          Looks like the username is invalid or Instagram is blocking our request.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

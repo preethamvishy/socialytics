@@ -3,13 +3,14 @@
   <p class="lead text-muted">
     Quick, relevant and actionable instagram analytics.
   </p>
-  <form [formGroup]="searchQuery" class="search-container" (submit)="search()">
-    <input type="text" id="search-bar" placeholder="Instagram username" class="form-control" [(ngModel)]="username"
+  <form [formGroup]="searchQuery" (submit)="search()" class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+    <div class="input-group">
+      <input class="form-control py-2 border-right-0 border" type="search" value="search" id="searchbar" placeholder="Instagram username" [(ngModel)]="username"
       formControlName="username" (submit)="search()">
-    <a>
-      <img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
-        (click)="search()">
-    </a>
+      <span class="input-group-append">
+        <div class="input-group-text" (click)="search()"><i class="fas fa-search"></i></div>
+      </span>
+    </div>
   </form>
 </div>
 <div *ngIf="loaded==true" class="container bg-light">

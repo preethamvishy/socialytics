@@ -1,15 +1,16 @@
 <div class="container jumbotron text-center bg-warning">
-    <h1 class="jumbotron-heading text-dark">Socialytics</h1>
-    <p class="lead text-muted">
-      Quick, relevant and actionable instagram analytics.
-    </p>
-    <form [formGroup]="searchQuery" class="search-container" (submit)="search()">
-      <input type="text" id="search-bar" placeholder="Instagram username" class="form-control" [(ngModel)]="username"
-        formControlName="username" (submit)="search()">
-      <a>
-        <img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png" (click)="search()">
-      </a>
-    </form>
+  <h1 class="jumbotron-heading text-dark">Socialytics</h1>
+  <p class="lead text-muted">
+    Quick, relevant and actionable instagram analytics.
+  </p>
+  <form [formGroup]="searchQuery" class="search-container" (submit)="search()">
+    <input type="text" id="search-bar" placeholder="Instagram username" class="form-control" [(ngModel)]="username"
+      formControlName="username" (submit)="search()">
+    <a>
+      <img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"
+        (click)="search()">
+    </a>
+  </form>
 </div>
 <div *ngIf="loaded==true" class="container bg-light">
   <div class="row">
@@ -40,7 +41,7 @@
       <div class="card mb-4 box-shadow">
         <div class="card-body text-center">
           <small>{{item.key}}</small>
-          <h2 class="card-text">{{item.value}}
+          <h2 class="card-text">{{item.value | number: '1.'}}
           </h2>
         </div>
       </div>
@@ -51,7 +52,7 @@
       <div class="card mb-4 box-shadow">
         <div class="card-body text-center">
           <small>{{item.key}}</small>
-          <h2 class="card-text">{{item.value}}
+          <h2 class="card-text">{{item.value | number: '1.'}}
           </h2>
           <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
         </div>
@@ -59,7 +60,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12 col-lg-6">
       <div class="card mb-4 box-shadow">
         <div class="card-header text-center">
           <h6 class="text-center">Most Liked Media</h6>
@@ -68,15 +69,15 @@
           <div class="row">
             <div *ngFor="let media of mostLikedMedia" class="col-md-4">
               <div class="card mb-4 box-shadow topMediaContainer">
-                <div class="overlay" (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)">
+                <div class="overlay" (click)="toggleModal(media)">
                   <div class="text">
-                    <span class="glyphicon glyphicon-heart"></span>
-                    {{media.node.edge_media_preview_like.count}}
+                    <i class="fas fa-heart"></i>
+                    {{media.node.edge_media_preview_like.count | number: '1.'}}
                     <br />likes
                   </div>
                 </div>
-                <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)" class="card-img-top topMedia image"
-                  [src]="media.node.display_url" />
+                <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
+                  class="card-img-top topMedia image" [src]="media.node.display_url" />
               </div>
             </div>
           </div>
@@ -84,7 +85,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12 col-lg-6">
       <div class="card mb-4 box-shadow">
         <div class="card-header text-center">
           <h6 class="text-center">Most Commented Media</h6>
@@ -93,15 +94,15 @@
           <div class="row">
             <div *ngFor="let media of mostCommentedMedia" class="col-md-4">
               <div class="card mb-4 box-shadow topMediaContainer">
-                <div class="overlay" (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)">
+                <div class="overlay" (click)="toggleModal(media)">
                   <div class="text">
-                    <span class="glyphicon glyphicon-heart"></span>
-                    {{media.node.edge_media_to_comment.count}}
+                    <i class="fas fa-comment"></i>
+                    {{media.node.edge_media_to_comment.count | number: '1.'}}
                     <br />comments
                   </div>
                 </div>
-                <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)" class="card-img-top topMedia image"
-                  [src]="media.node.display_url" />
+                <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
+                  class="card-img-top topMedia image" [src]="media.node.display_url" />
               </div>
             </div>
           </div>
@@ -112,4 +113,61 @@
   </div>
   <p style="font-size: 9px;">*Instagram has closed several public endpoints in April 2018. Development in progress to
     account for this and crunch out detailed analytics.</p>
+</div>
+
+
+<div class="modal fade" id="postExpand" tabindex="-1" role="dialog" aria-labelledby="postExpandTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <ng-container *ngIf="expandPost != null ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-secondary" id="postExpandTitle">@{{stats.username}}'s post</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body container">
+          <img (click)="externalUrl('http://www.instagram.com/p/' + expandPost.node.shortcode)"
+            class="card-img-top topMedia image" [src]="expandPost.node.display_url" />
+          <div class="row justify-content-center align-middle text text-muted">
+            <div>
+              <span class="right-space">
+                <i class="fas fa-heart"></i>
+                {{expandPost.node.edge_media_preview_like.count  | number: '1.'}}
+              </span>
+              <i class="fas fa-comment"></i>
+              {{expandPost.node.edge_media_to_comment.count  | number: '1.'}}
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary"
+            (click)="externalUrl('http://www.instagram.com/p/' + expandPost.node.shortcode)">Open in Instagram</button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="errorTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <ng-container>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-secondary" id="postExpandTitle">Oops!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body container">
+          Looks like the username is invalid or Instagram is blocking our request.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>

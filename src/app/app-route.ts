@@ -7,9 +7,6 @@ import { InstagramComponent } from './instagram/instagram/instagram.component';
 export const APP_ROUTES: Routes = [
   { path: '', redirectTo: '/instagram', pathMatch: 'full' },
   { path: 'instagram', component: InstagramComponent },
-  // {
-  //   path: '',
-  //   component: ,
-  //   data: { },
-  // },
+  { path: '**', redirectTo: '' }
+  
 ];

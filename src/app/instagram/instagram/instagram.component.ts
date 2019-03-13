@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import { catchError } from 'rxjs/operators';
+
+
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +14,7 @@ import { ElectronService } from 'ngx-electron';
 import { InstagramService } from '../instagram.service'
 import { Http } from '@angular/http';
 
+declare var $: any;
 
 @Component({
   selector: 'app-instagram',
@@ -21,7 +25,6 @@ export class InstagramComponent implements OnInit {
 
   searchQuery: FormGroup;
   basicUserData;
-  advancedUserData;
   media: any[] = [];
   username = '';
   loaded = false;
@@ -42,9 +45,9 @@ export class InstagramComponent implements OnInit {
   ]
 
   sampleSize;
-  statMethod;
+  expandPost = null;
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
     private instagramService: InstagramService,
     private fb: FormBuilder,
     private electronService: ElectronService,
@@ -55,14 +58,14 @@ export class InstagramComponent implements OnInit {
 
   ngOnInit() {
     this.route
-    .queryParams
-    .subscribe(params => {
-      this.username = params['user'] || '';
-      if(this.username.length > 0)
-        this.search();
-    });
+      .queryParams
+      .subscribe(params => {
+        this.username = params['user'] || '';
+        if (this.username.length > 0)
+          this.search();
+      });
 
-    
+
   }
   createForm() {
     this.searchQuery = this.fb.group({
@@ -71,16 +74,13 @@ export class InstagramComponent implements OnInit {
   }
 
   search() {
-    if(this.username.length <= 0)    
+    if (this.username.length <= 0)
       this.username = this.searchQuery.value.username.trim();
-      
+
     else {
-    this.getUserData();
-    // this.getMockData()
-    // this.getFullStats();
-    // this.getQuickStats();   //recommended
-    
-    this.router.navigate(['instagram'], { queryParams: { user: this.username.trim()} });
+      this.getUserData();
+   
+      this.router.navigate(['instagram'], { queryParams: { user: this.username.trim() } });
     }
   }
   externalUrl(url) {
@@ -90,61 +90,39 @@ export class InstagramComponent implements OnInit {
     else
       window.open(url);
   }
+
   getMockData() {
     this.http.get('./assets/mockStats.json')
       .subscribe(res => {
         this.stats = res;
-        this.statMethod = 'quick';
         this.populateStats();
       })
   }
- 
-  //this is the logic that usually works but has not been reliable since Instagram started making changes to it s API endpoints in April 2018
-  // getUserData() {
-  //   this.instagramService.getUserByUsername(this.username)
-  //     .subscribe((basicUserData) => {
-  //       this.basicUserData = basicUserData;
-  //       this.instagramService.getUserById(this.basicUserData.graphql.user.id)
-  //         .subscribe((advancedUserData) => {
-  //           this.advancedUserData = advancedUserData
-  //           this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.graphql.user, this.username, 6);
-  //           this.statMethod = 'quick';
-  //           this.populateStats();
-  //         })
-  //     })
-  // }
 
-
-  //temporary workaround while Instagram's API endpoints are unstable
   getUserData() {
-    this.http.get('https://www.instagram.com/' + this.username)
+
+    var body = new HttpParams()
+      .set('username', this.username)
+
+    this.http.post(`https://ig-server.herokuapp.com/user`, body.toString(),
+      {
+        headers: new HttpHeaders()
+          .append('Content-Type', 'application/json')
+          .append('Access-Control-Allow-Origin', '*')
+          .append("Access-Control-Allow-Headers", "*")
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    ).pipe(
+      catchError(this.handleError)
+    )
       .subscribe((data) => {
-        var userData = JSON.parse(data['_body'].split('"ProfilePage":[')[1].split(']},"gatekeepers"')[0])
+        var userData = data;
         this.basicUserData = userData
-        this.stats = this.instagramService.getStats(userData.graphql.user.edge_owner_to_timeline_media.edges, userData.graphql.user, this.username, 6);
-        this.statMethod = 'quick';
+        this.stats = this.instagramService.getStats(userData['graphql'].user.edge_owner_to_timeline_media.edges, userData['graphql'].user, this.username, 6);
         this.populateStats();
       })
   }
-  getQuickStats() {
-    this.electronService.remote.require('./main.js').instalytics.getQuickStats(this.username, 6)
-      .then(
-      res => {
-        this.stats = res;
-        this.statMethod = 'quick'
-        this.populateStats();
-      });
-  }
-  getFullStats() {
-    this.electronService.remote.require('./main.js').instalytics.getFullStats(this.username, 6, 30000)
-      .then(
-      res => {
-        this.statMethod = 'full'
-        this.stats = res;
-        this.populateStats();
-      });
-  }
-  
+
   populateStats() {
     this.summary[0].value = this.stats.posts;
     this.summary[1].value = this.stats.followers;
@@ -159,5 +137,15 @@ export class InstagramComponent implements OnInit {
     this.mostCommentedMedia = this.stats.mostCommentedMedia;
     this.sampleSize = this.basicUserData.graphql.user.edge_owner_to_timeline_media.edges.length;
     this.loaded = true;
+  }
+
+  toggleModal(media) {
+    $("#postExpand").modal("toggle");
+    this.expandPost = media
+  }
+
+  handleError() {
+    $("#error").modal("toggle");
+    return 'Some error occured'
   }
 }

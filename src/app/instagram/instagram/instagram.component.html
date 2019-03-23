@@ -17,26 +17,40 @@
 </div>
 <div *ngIf="loaded==true" class="container-fluid bg-light">
   <div class="container">
-    <div class="row">
-      <div class="profile">
-        <div class="col-md-12">
-          <div>
-            <div class="card-body">
-              <img class="avatar" [src]="stats.profilePictureUrlHD" />
-              <div class="name">
-                {{stats.name}}
-              </div>
-              <div class="username">
-                @{{stats.username}}
-              </div>
-              <div class="bio">
-                {{stats.bio}}
-              </div>
-              <div class="website">
-                <a (click)="externalUrl(stats.website)" target="_blank">{{stats.website}}</a>
-              </div>
-            </div>
-          </div>
+    <div class="row w-100">
+      <!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div>
+                        <div class="card-body">
+                          <img class="avatar" [src]="stats.profilePictureUrlHD" />
+                          <div class="name">
+                            {{stats.name}}
+                          </div>
+                          <div class="username">
+                            @{{stats.username}}
+                          </div>
+                          <div class="bio">
+                            {{stats.bio}}
+                          </div>
+                          <div class="website">
+                            <a (click)="externalUrl(stats.website)" target="_blank">{{stats.website}}</a>
+                          </div>
+                        </div>
+                      </div> -->
+      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 d-flex align-items-center justify-content-center">
+          <img class="avatar" [src]="stats.profilePictureUrlHD" />
+      </div>
+      <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 card-body">
+        <div class="name">
+          {{stats.name}}
+        </div>
+        <div class="username">
+          @{{stats.username}}
+        </div>
+        <div class="bio">
+          {{stats.bio}}
+        </div>
+        <div class="website">
+          <a (click)="externalUrl(stats.website)" target="_blank">{{stats.website}}</a>
         </div>
       </div>
     </div>

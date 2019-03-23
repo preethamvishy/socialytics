@@ -8,40 +8,38 @@
 .jumbotron {
   margin-bottom: 0;
 }
+
 body {
   background: #fffcdd;
   padding: 2.23em;
 }
 
 .name {
-  margin: auto;
-  margin-top: -4.40em;
-  margin-left: 5.80em;
   color: #658585;
   font-size: 1.53em;
   font-weight: bold;
 }
+
 .username {
   margin: auto;
   display: inline-block;
-  margin-left: 10.43em;
   color: #658585; 
   font-size: .87em;
 }
 
 .bio {
   margin: auto;
-  margin-left: 10.43em;
   color: #c0c5c5; 
   font-size: .87em;
 }
+
 .website {
   margin: auto;
-  margin-left: 10.43em;
   color: #0e98d3; 
   font-size: .87em;
   cursor: pointer;
 }
+
 img.avatar {
 	padding: .7em;
   margin-left: .3em;
@@ -128,9 +126,11 @@ cursor: pointer;
   color: white;
   opacity: 1;
 }
+
 .topMediaContainer:hover .overlay {
 opacity: 0.8;
 }
+
 .text {
   transform: translate(0%, 25%);
   -ms-transform: translate(0%, 25%);
@@ -139,6 +139,7 @@ opacity: 0.8;
   height: 100%;
   width: 100%;
 }
+
 h6 {
   margin: 0;
 }

@@ -1,121 +1,124 @@
-<div class="container jumbotron text-center bg-warning">
-  <h1 class="jumbotron-heading text-dark">Socialytics</h1>
-  <p class="lead text-muted">
-    Quick, relevant and actionable instagram analytics.
-  </p>
-  <form [formGroup]="searchQuery" (submit)="search()" class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
-    <div class="input-group">
-      <input class="form-control py-2 border-right-0 border" type="search" value="search" id="searchbar" placeholder="Instagram username" [(ngModel)]="username"
-      formControlName="username" (submit)="search()">
-      <span class="input-group-append">
-        <div class="input-group-text" (click)="search()"><i class="fas fa-search"></i></div>
-      </span>
-    </div>
-  </form>
+<div class="container-fluid jumbotron text-center bg-warning">
+  <div class="container">
+    <h1 class="jumbotron-heading text-dark">Socialytics</h1>
+    <p class="lead text-muted">
+      Quick, relevant and actionable instagram analytics.
+    </p>
+    <form [formGroup]="searchQuery" (submit)="search()" class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+      <div class="input-group">
+        <input class="form-control py-2 border-right-0 border" type="search" value="search" id="searchbar"
+          placeholder="Instagram username" [(ngModel)]="username" formControlName="username" (submit)="search()">
+        <span class="input-group-append">
+          <div class="input-group-text" (click)="search()"><i class="fas fa-search"></i></div>
+        </span>
+      </div>
+    </form>
+  </div>
 </div>
-<div *ngIf="loaded==true" class="container bg-light">
-  <div class="row">
-    <div class="profile">
-      <div class="col-md-12">
-        <div>
-          <div class="card-body">
-            <img class="avatar" [src]="stats.profilePictureUrlHD" />
-            <div class="name">
-              {{stats.name}}
-            </div>
-            <div class="username">
-              @{{stats.username}}
-            </div>
-            <div class="bio">
-              {{stats.bio}}
-            </div>
-            <div class="website">
-              <a (click)="externalUrl(stats.website)" target="_blank">{{stats.website}}</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div [style.margin-top.px]="'20'" class="row">
-    <div *ngFor="let item of summary" class="col-md-4">
-      <div class="card mb-4 box-shadow">
-        <div class="card-body text-center">
-          <small>{{item.key}}</small>
-          <h2 class="card-text">{{item.value | number: '1.'}}
-          </h2>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div *ngFor="let item of engagements" class="col-md-3">
-      <div class="card mb-4 box-shadow">
-        <div class="card-body text-center">
-          <small>{{item.key}}</small>
-          <h2 class="card-text">{{item.value | number: '1.'}}
-          </h2>
-          <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12 col-lg-6">
-      <div class="card mb-4 box-shadow">
-        <div class="card-header text-center">
-          <h6 class="text-center">Most Liked Media</h6>
-        </div>
-        <div class="card-body text-center">
-          <div class="row">
-            <div *ngFor="let media of mostLikedMedia" class="col-md-4">
-              <div class="card mb-4 box-shadow topMediaContainer">
-                <div class="overlay" (click)="toggleModal(media)">
-                  <div class="text">
-                    <i class="fas fa-heart"></i>
-                    {{media.node.edge_media_preview_like.count | number: '1.'}}
-                    <br />likes
-                  </div>
-                </div>
-                <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
-                  class="card-img-top topMedia image" [src]="media.node.display_url" />
+<div *ngIf="loaded==true" class="container-fluid bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="profile">
+        <div class="col-md-12">
+          <div>
+            <div class="card-body">
+              <img class="avatar" [src]="stats.profilePictureUrlHD" />
+              <div class="name">
+                {{stats.name}}
+              </div>
+              <div class="username">
+                @{{stats.username}}
+              </div>
+              <div class="bio">
+                {{stats.bio}}
+              </div>
+              <div class="website">
+                <a (click)="externalUrl(stats.website)" target="_blank">{{stats.website}}</a>
               </div>
             </div>
           </div>
-          <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
         </div>
       </div>
     </div>
-    <div class="col-md-12 col-lg-6">
-      <div class="card mb-4 box-shadow">
-        <div class="card-header text-center">
-          <h6 class="text-center">Most Commented Media</h6>
+    <div [style.margin-top.px]="'20'" class="row">
+      <div *ngFor="let item of summary" class="col-md-4">
+        <div class="card mb-4 box-shadow">
+          <div class="card-body text-center">
+            <small>{{item.key}}</small>
+            <h2 class="card-text">{{item.value | number: '1.'}}
+            </h2>
+          </div>
         </div>
-        <div class="card-body text-center">
-          <div class="row">
-            <div *ngFor="let media of mostCommentedMedia" class="col-md-4">
-              <div class="card mb-4 box-shadow topMediaContainer">
-                <div class="overlay" (click)="toggleModal(media)">
-                  <div class="text">
-                    <i class="fas fa-comment"></i>
-                    {{media.node.edge_media_to_comment.count | number: '1.'}}
-                    <br />comments
+      </div>
+    </div>
+    <div class="row">
+      <div *ngFor="let item of engagements" class="col-md-3">
+        <div class="card mb-4 box-shadow">
+          <div class="card-body text-center">
+            <small>{{item.key}}</small>
+            <h2 class="card-text">{{item.value | number: '1.'}}
+            </h2>
+            <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <div class="card mb-4 box-shadow">
+          <div class="card-header text-center">
+            <h6 class="text-center">Most Liked Media</h6>
+          </div>
+          <div class="card-body text-center">
+            <div class="row">
+              <div *ngFor="let media of mostLikedMedia" class="col-md-4">
+                <div class="card mb-4 box-shadow topMediaContainer">
+                  <div class="overlay" (click)="toggleModal(media)">
+                    <div class="text">
+                      <i class="fas fa-heart"></i>
+                      {{media.node.edge_media_preview_like.count | number: '1.'}}
+                      <br />likes
+                    </div>
                   </div>
+                  <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
+                    class="card-img-top topMedia image" [src]="media.node.display_url" />
                 </div>
-                <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
-                  class="card-img-top topMedia image" [src]="media.node.display_url" />
               </div>
             </div>
+            <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
           </div>
-          <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
+        </div>
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <div class="card mb-4 box-shadow">
+          <div class="card-header text-center">
+            <h6 class="text-center">Most Commented Media</h6>
+          </div>
+          <div class="card-body text-center">
+            <div class="row">
+              <div *ngFor="let media of mostCommentedMedia" class="col-md-4">
+                <div class="card mb-4 box-shadow topMediaContainer">
+                  <div class="overlay" (click)="toggleModal(media)">
+                    <div class="text">
+                      <i class="fas fa-comment"></i>
+                      {{media.node.edge_media_to_comment.count | number: '1.'}}
+                      <br />comments
+                    </div>
+                  </div>
+                  <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
+                    class="card-img-top topMedia image" [src]="media.node.display_url" />
+                </div>
+              </div>
+            </div>
+            <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
+          </div>
         </div>
       </div>
     </div>
+    <p style="font-size: 9px;">*Instagram has closed several public endpoints in April 2018. Development in progress to
+      account for this and crunch out detailed analytics.</p>
   </div>
-  <p style="font-size: 9px;">*Instagram has closed several public endpoints in April 2018. Development in progress to
-    account for this and crunch out detailed analytics.</p>
 </div>
-
 
 <div class="modal fade" id="postExpand" tabindex="-1" role="dialog" aria-labelledby="postExpandTitle"
   aria-hidden="true">

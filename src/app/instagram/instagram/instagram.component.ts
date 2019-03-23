@@ -142,6 +142,7 @@ export class InstagramComponent implements OnInit {
   toggleModal(media) {
     $("#postExpand").modal("toggle");
     this.expandPost = media
+    console.log(media)
   }
 
   handleError() {

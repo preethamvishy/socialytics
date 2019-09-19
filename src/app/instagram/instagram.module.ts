@@ -8,7 +8,8 @@ import { ChartsModule } from 'ng2-charts';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { NgxElectronModule } from 'ngx-electron';
-import { HttpModule, Http } from '@angular/http';
+
+import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { HttpModule, Http } from '@angular/http';
     ReactiveFormsModule,
     FormsModule,
     NgxElectronModule,
-    HttpModule
+    NgZorroAntdModule
   ],
   declarations: [InstagramComponent],
   exports: [InstagramComponent],

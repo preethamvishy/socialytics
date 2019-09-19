@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
@@ -10,7 +10,7 @@ export class InstagramService {
 
   getUserByUsername(username) {
     return this.http.get(`https://www.instagram.com/${username}/?__a=1`)
-      .map(res => res)
+      .pipe(map(res => res))
   }
 
   getUserById(
@@ -18,7 +18,7 @@ export class InstagramService {
     count = 50,
     after = '') {
     return this.http.get(`https://www.instagram.com/graphql/query/?query_id=17888483320059182&id=${userId}&first=${count}&after=${after}`)
-      .map(res => res)
+    .pipe(map(res => res))
   }
 
   getStats (media, user, username, topCount = 6) {
@@ -39,8 +39,8 @@ export class InstagramService {
         count++;
     }
 
-    averageLikes = likes / count;
-    averageComments = comments / count;
+    averageLikes = (likes / count) || 0;
+    averageComments = (comments / count) || 0;
 
     return {
         username: username,
@@ -56,13 +56,13 @@ export class InstagramService {
         totalLikes: likes,
         totalComments: comments,
         totalEngagements: (likes + comments),
-        averageLikes: Math.round(likes / count),
-        averageComments: Math.round(comments / count),
+        averageLikes: (Math.round(likes / count)) || 0,
+        averageComments: (Math.round(comments / count))  || 0,
         averageEngagements: Math.round((likes + comments) / count),
         mostLikedMedia: mostLikedMedia,
         mostCommentedMedia: mostCommentedMedia,
         success: true,
-        
+        sampleSize: count
     }
 }
 

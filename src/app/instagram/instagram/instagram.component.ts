@@ -123,7 +123,7 @@ export class InstagramComponent implements OnInit {
 
     this.mostLikedMedia = this.stats.mostLikedMedia;
     this.mostCommentedMedia = this.stats.mostCommentedMedia;
-    this.sampleSize = this.stats.sampleSize;
+    this.sampleSize = this.stats.posts <= 50 ? this.stats.sampleSize : '50 latest';
     this.loading = false;
     this.loaded = true;
   }

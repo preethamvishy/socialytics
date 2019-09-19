@@ -1,6 +1,7 @@
 <div class="container-fluid m-0 jumbotron bg-warning">
-  <div class="container d-flex justify-content-center">
-    <div class="p-3 pt-1 mt-0 mb-3 text-white-50 col-lg-6 col-md-8 col-sm-10 col-xs-12">
+  <div class="container d-flex justify-content-center p-3 my-3 text-white-50">
+    <img class="mr-3" src="/assets/logo.png" width="64" height="64">
+    <div class="lh-100">
       <h2 class="mb-1 text-white">Socialytics.</h2>
       <span nz-text>Blazing fast, actionable Instagram analytics for any public account 🚀</span>
     </div>
@@ -26,7 +27,7 @@
   </nz-result>
 </div>
 
-<div *ngIf="loading && !loaded" class="container-fluid m-0 py-4 min-100bg-light">
+<div *ngIf="loading && !loaded" class="container-fluid m-0 py-4 min-100 bg-light">
   <div class="container">
     <nz-skeleton [nzActive]="loading" class="row w-100" [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
     <div class="d-flex mt-4 justify-content-between">
@@ -118,7 +119,7 @@
                       <br />likes
                     </div>
                   </div>
-                  
+
                   <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
                     class="card-img-top topMedia image" [src]="media.node.display_url" />
                 </div>
@@ -154,7 +155,9 @@
         </div>
       </div>
     </div>
-    <p style="font-size: 9px;">*Instagram public endpoints have been changing since April 2018. As a result, the application is in continuous development. If the endpoints have changed since the last test run, please bear with me and consider creating an issue <a href="https://github.com/preethamvishy/socialytics/issues">here</a>.</p>
+    <p style="font-size: 9px;">*Instagram public endpoints have been changing since April 2018. As a result, the
+      application is in continuous development. If the endpoints have changed since the last test run, please bear with
+      me and consider creating an issue <a href="https://github.com/preethamvishy/socialytics/issues">here</a>.</p>
   </div>
 </div>
 

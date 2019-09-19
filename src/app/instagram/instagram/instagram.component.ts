@@ -28,18 +28,8 @@ export class InstagramComponent implements OnInit {
   stats;
   mostLikedMedia = [];
   mostCommentedMedia = [];
-  summary = [
-    { key: 'Posts', value: '' },
-    { key: 'Followers', value: '' },
-    { key: 'Following', value: '' }
-  ]
-
-  engagements = [
-    { key: 'Total likes', value: '' },
-    { key: 'Total comments', value: '' },
-    { key: 'Average likes', value: '' },
-    { key: 'Average comments', value: '' }
-  ]
+  summary;
+  engagements;
 
   sampleSize;
   expandPost = null;
@@ -52,6 +42,7 @@ export class InstagramComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router) {
     this.createForm();
+    this.reset();
   }
 
   ngOnInit() {
@@ -76,6 +67,8 @@ export class InstagramComponent implements OnInit {
       this.username = this.searchQuery.value.username.trim();
 
     else {
+      this.loading = true;
+      this.reset();
       this.getUserData();
       this.router.navigate(['instagram'], { queryParams: { user: this.username.trim() } });
     }
@@ -136,21 +129,7 @@ export class InstagramComponent implements OnInit {
   handleError() {
     this.loading = false;
     this.loaded = true;
-    this.stats = undefined;
-    this.mostLikedMedia = [];
-    this.mostCommentedMedia = [];
-    this.summary = [
-      { key: 'Posts', value: '' },
-      { key: 'Followers', value: '' },
-      { key: 'Following', value: '' }
-    ];
-
-    this.engagements = [
-      { key: 'Total likes', value: '' },
-      { key: 'Total comments', value: '' },
-      { key: 'Average likes', value: '' },
-      { key: 'Average comments', value: '' }
-    ];
+    this.reset();
 
     $("#error").modal("toggle");
   }
@@ -158,5 +137,23 @@ export class InstagramComponent implements OnInit {
   focusUsernameSearch() {
     this.usernameEl.nativeElement.focus();
     this.usernameEl.nativeElement.scrollIntoView({ behavior: "smooth", block: 'end' });
+  }
+
+  reset() {
+    this.stats = undefined;
+    this.mostLikedMedia = [];
+    this.mostCommentedMedia = [];
+    this.summary = [
+      { key: 'Posts', value: '0' },
+      { key: 'Followers', value: '0' },
+      { key: 'Following', value: '0' }
+    ];
+
+    this.engagements = [
+      { key: 'Total likes', value: '0' },
+      { key: 'Total comments', value: '0' },
+      { key: 'Average likes', value: '0' },
+      { key: 'Average comments', value: '0' }
+    ];
   }
 }

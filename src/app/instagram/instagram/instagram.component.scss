@@ -1,19 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway|Varela+Round|Coda);
 @import url(https://fonts.googleapis.com/css?family=Armata|Economica);
 
-*:not(.fas) {
-  font-family: "Armata";
+.stats-container {
+  :not(.fas) {
+    font-family: Armata;
+  }
 }
 
 .jumbotron {
-  margin-bottom: 0;
+  border-radius: 0;
 }
-
-body {
-  background: #fffcdd;
-  padding: 2.23em;
-}
-
 .name {
   color: #658585;
   font-size: 1.53em;
@@ -159,4 +155,24 @@ h6 {
 
 form {
   margin: auto;
+}
+
+
+nz-page-header {
+  border: 1px solid rgb(235, 237, 240);
+}
+
+.wrap {
+  display: flex;
+}
+
+
+.extra-content {
+  min-width: 240px;
+  text-align: right;
+  font-size: 50px;
+}
+
+.min-100 {
+  min-height: 100%;
 }

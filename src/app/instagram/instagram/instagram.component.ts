@@ -1,18 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import 'rxjs/Rx';
-import 'rxjs/add/operator/map';
 import { catchError } from 'rxjs/operators';
 
 
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ElectronService } from 'ngx-electron';
 import { InstagramService } from '../instagram.service'
-import { Http } from '@angular/http';
 
 declare var $: any;
 
@@ -23,11 +17,14 @@ declare var $: any;
 })
 export class InstagramComponent implements OnInit {
 
+  @ViewChild('usernameSearchBar', { static: true }) usernameEl;
+
   searchQuery: FormGroup;
   basicUserData;
   media: any[] = [];
   username = '';
   loaded = false;
+  loading = false;
   stats;
   mostLikedMedia = [];
   mostCommentedMedia = [];
@@ -46,6 +43,7 @@ export class InstagramComponent implements OnInit {
 
   sampleSize;
   expandPost = null;
+  advancedUserData;
 
   constructor(private http: HttpClient,
     private instagramService: InstagramService,
@@ -79,7 +77,6 @@ export class InstagramComponent implements OnInit {
 
     else {
       this.getUserData();
-   
       this.router.navigate(['instagram'], { queryParams: { user: this.username.trim() } });
     }
   }
@@ -101,26 +98,17 @@ export class InstagramComponent implements OnInit {
 
   getUserData() {
 
-    var body = new HttpParams()
-      .set('username', this.username)
-
-    this.http.post(`https://ig-server.herokuapp.com/user`, body.toString(),
-      {
-        headers: new HttpHeaders()
-          .append('Content-Type', 'application/json')
-          .append('Access-Control-Allow-Origin', '*')
-          .append("Access-Control-Allow-Headers", "*")
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-      }
-    ).pipe(
-      catchError(this.handleError)
-    )
-      .subscribe((data) => {
-        var userData = data;
-        this.basicUserData = userData
-        this.stats = this.instagramService.getStats(userData['graphql'].user.edge_owner_to_timeline_media.edges, userData['graphql'].user, this.username, 6);
-        this.populateStats();
-      })
+    this.loading = true;
+    this.instagramService.getUserByUsername(this.username)
+      .subscribe((basicUserData) => {
+        this.basicUserData = basicUserData;
+        this.instagramService.getUserById(this.basicUserData.graphql.user.id)
+          .subscribe((advancedUserData) => {
+            this.advancedUserData = advancedUserData
+            this.stats = this.instagramService.getStats(this.advancedUserData.data.user.edge_owner_to_timeline_media.edges, this.basicUserData.graphql.user, this.username, 6);
+            this.populateStats();
+          }, err => this.handleError())
+      }, err => this.handleError())
   }
 
   populateStats() {
@@ -135,18 +123,40 @@ export class InstagramComponent implements OnInit {
 
     this.mostLikedMedia = this.stats.mostLikedMedia;
     this.mostCommentedMedia = this.stats.mostCommentedMedia;
-    this.sampleSize = this.basicUserData.graphql.user.edge_owner_to_timeline_media.edges.length;
+    this.sampleSize = this.stats.sampleSize;
+    this.loading = false;
     this.loaded = true;
   }
 
   toggleModal(media) {
     $("#postExpand").modal("toggle");
     this.expandPost = media
-    console.log(media)
   }
 
   handleError() {
+    this.loading = false;
+    this.loaded = true;
+    this.stats = undefined;
+    this.mostLikedMedia = [];
+    this.mostCommentedMedia = [];
+    this.summary = [
+      { key: 'Posts', value: '' },
+      { key: 'Followers', value: '' },
+      { key: 'Following', value: '' }
+    ];
+
+    this.engagements = [
+      { key: 'Total likes', value: '' },
+      { key: 'Total comments', value: '' },
+      { key: 'Average likes', value: '' },
+      { key: 'Average comments', value: '' }
+    ];
+
     $("#error").modal("toggle");
-    return 'Some error occured'
+  }
+
+  focusUsernameSearch() {
+    this.usernameEl.nativeElement.focus();
+    this.usernameEl.nativeElement.scrollIntoView({ behavior: "smooth", block: 'end' });
   }
 }

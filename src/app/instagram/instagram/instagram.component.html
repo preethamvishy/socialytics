@@ -1,25 +1,67 @@
-<div class="container-fluid jumbotron text-center bg-warning">
-  <div class="container">
-    <h1 class="jumbotron-heading text-dark">Socialytics</h1>
-    <p class="lead text-muted">
-      Quick, relevant and actionable instagram analytics.
-    </p>
-    <form [formGroup]="searchQuery" (submit)="search()" class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
-      <div class="input-group">
-        <input class="form-control py-2 border-right-0 border" type="search" value="search" id="searchbar"
-          placeholder="Instagram username" [(ngModel)]="username" formControlName="username" (submit)="search()">
-        <span class="input-group-append">
-          <div class="input-group-text" (click)="search()"><i class="fas fa-search"></i></div>
-        </span>
-      </div>
+<div class="container-fluid m-0 jumbotron bg-warning">
+  <div class="container d-flex justify-content-center">
+    <div class="p-3 pt-1 mt-0 mb-3 text-white-50 col-lg-6 col-md-8 col-sm-10 col-xs-12">
+      <h2 class="mb-1 text-white">Socialytics.</h2>
+      <span nz-text>Blazing fast, actionable Instagram analytics for any public account</span>
+    </div>
+  </div>
+  <div class="container d-flex justify-content-center">
+    <form [formGroup]="searchQuery" (submit)="search()" class="col-lg-6 col-md-8 col-sm-10 col-xs-12 mb-3">
+      <nz-input-group nzAddOnBefore="@" [nzSuffix]="suffixIconSearch">
+        <input #usernameSearchBar nz-input type="text" value="search" id="searchbar" placeholder="Instagram username"
+          [(ngModel)]="username" formControlName="username" (submit)="search()">
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
     </form>
   </div>
 </div>
-<div *ngIf="loaded==true" class="container-fluid bg-light">
+
+<div *ngIf="!loading && !stats">
+  <nz-result nzStatus="403">
+    <div nz-result-extra>
+      <button nz-button nzType="primary" (click)="focusUsernameSearch()">Search for a user to view statistics</button>
+    </div>
+  </nz-result>
+</div>
+
+<div *ngIf="loading && !loaded" class="container-fluid m-0 py-4 min-100bg-light">
+  <div class="container">
+    <nz-skeleton [nzActive]="loading" class="row w-100" [nzAvatar]="true" [nzParagraph]="{ rows: 4 }"></nz-skeleton>
+    <div class="d-flex mt-4 justify-content-between">
+      <nz-card *ngFor="let i of [1,2,3]" style="background: transparent; width: 31%">
+        <nz-skeleton [nzActive]="true" [nzLoading]="loading">
+          <nz-card-meta>
+          </nz-card-meta>
+        </nz-skeleton>
+      </nz-card>
+    </div>
+    <div class="d-flex mt-4 justify-content-between">
+      <nz-card *ngFor="let i of [1,2,3,4]" style="background: transparent; width: 23.5%">
+        <nz-skeleton [nzActive]="true" [nzLoading]="loading">
+          <nz-card-meta>
+          </nz-card-meta>
+        </nz-skeleton>
+      </nz-card>
+    </div>
+    <div class="d-flex mt-4 justify-content-between">
+      <nz-card *ngFor="let i of [1,2]" style="background: transparent; width: 47.5%">
+        <nz-skeleton [nzActive]="true" [nzLoading]="loading" [nzParagraph]="{ rows: 10 }">
+          <nz-card-meta>
+          </nz-card-meta>
+        </nz-skeleton>
+      </nz-card>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="loaded && stats" class="container-fluid bg-light stats-container">
   <div class="container">
     <div class="row w-100">
       <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 d-flex align-items-center justify-content-center">
-          <img class="avatar" [src]="stats.profilePictureUrlHD" />
+        <img class="avatar" [src]="stats.profilePictureUrlHD" />
       </div>
       <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 card-body">
         <div class="name">
@@ -76,6 +118,7 @@
                       <br />likes
                     </div>
                   </div>
+                  
                   <img (click)="externalUrl('http://www.instagram.com/p/' + media.node.shortcode)"
                     class="card-img-top topMedia image" [src]="media.node.display_url" />
                 </div>
@@ -111,8 +154,7 @@
         </div>
       </div>
     </div>
-    <p style="font-size: 9px;">*Instagram has closed several public endpoints in April 2018. Development in progress to
-      account for this and crunch out detailed analytics.</p>
+    <p style="font-size: 9px;">*Instagram public endpoints have been changing since April 2018. As a result, the application is in continuous development. If the endpoints have changed since the last test run, please bear with me and consider creating an issue <a href="https://github.com/preethamvishy/socialytics/issues">here</a>.</p>
   </div>
 </div>
 

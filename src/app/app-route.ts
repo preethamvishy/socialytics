@@ -8,7 +8,9 @@ export const APP_ROUTES: Routes = [
   { path: '', redirectTo: 'instagram', pathMatch: 'full' },
   {
     path: 'instagram', component: InstagramComponent, children: [{
-      path: '**', redirectTo: ''
+      path: '', component: InstagramComponent
+    }, {
+      path: '**', redirectTo: '',
     }]
   },
   { path: '**', redirectTo: '' }

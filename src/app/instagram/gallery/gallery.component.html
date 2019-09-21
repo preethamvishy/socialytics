@@ -1,0 +1,25 @@
+<div class="card mb-4 box-shadow">
+    <div class="card-header text-center">
+        <h6 class="text-center">{{title}}</h6>
+    </div>
+    <div class="card-body text-center">
+        <div class="row">
+            <div *ngFor="let media of galleryMedia; trackBy: media?.node?.id" class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                <div class="card mb-4 box-shadow topMediaContainer">
+                    <div class="overlay" (click)="toggleModal.emit(media)">
+                        <div class="text">
+                            <i class="fas fa-heart"></i>
+                            {{media.node.edge_media_preview_like.count | number: '1.'}}
+                            <br />{{term}}
+                        </div>
+                    </div>
+                    <div class="square topMedia image"
+                        (click)="externalUrl.emit('http://www.instagram.com/p/' + media.node.shortcode)"
+                        [style.backgroundImage]="'url(' + media.node.display_url + ')'">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <small style="font-size: 10px">(based on {{sampleSize}} posts)</small>
+    </div>
+</div>

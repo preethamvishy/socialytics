@@ -1,0 +1,16 @@
+@media only screen and (min-width: 732px) and (max-width: 924px) {
+    .score-header {
+        font-size: 11px !important;
+    }
+    .score-body {
+        font-size: 2vw !important;
+    }
+}
+@media only screen and (min-width: 924px) and (max-width: 1200px) {
+    .score-header {
+        font-size: 1vw !important;
+    }
+    .score-body {
+        font-size: 2vw !important;
+    }
+}

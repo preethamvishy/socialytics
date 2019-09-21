@@ -1,0 +1,14 @@
+::ng-deep .vertical-center-modal .ant-modal {
+    top: 60px;
+}
+
+.bio {
+    margin: auto;
+    color: #b5bbbb; 
+    font-size: .87em;
+  }
+
+  .right-space {
+    margin-right: 15px;
+    margin-left: 55px;
+  }

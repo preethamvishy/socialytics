@@ -4,12 +4,21 @@
 .stats-container {
   :not(.fas) {
     font-family: Armata;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;   
   }
 }
 
 .jumbotron {
   border-radius: 0;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;   
 }
+
 .name {
   color: #658585;
   font-size: 1.53em;
@@ -25,7 +34,7 @@
 
 .bio {
   margin: auto;
-  color: #c0c5c5; 
+  color: #b5bbbb; 
   font-size: .87em;
 }
 
@@ -90,54 +99,9 @@ input#search-bar{
   cursor: pointer;
 }
 
-.topMedia{
-  cursor: pointer;
-}
-
-.image {
-opacity: 1;
-display: block;
-width: 100%;
-height: auto;
-transition: .5s ease;
-backface-visibility: hidden;
-}
-
-.overlay {
-transition: .5s ease;
-opacity: 0;
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
--ms-transform: translate(-50%, -50%);
-text-align: center;
-background-color: black;
-height: 100%;
-width: 100%;
-cursor: pointer;
-}
-
 .glyphicon {
   color: white;
   opacity: 1;
-}
-
-.topMediaContainer:hover .overlay {
-opacity: 0.8;
-}
-
-.text {
-  transform: translate(0%, 25%);
-  -ms-transform: translate(0%, 25%);
-  color: white;
-  font-size: 16px;
-  height: 100%;
-  width: 100%;
-}
-
-h6 {
-  margin: 0;
 }
 
 .right-space {
@@ -157,22 +121,33 @@ form {
   margin: auto;
 }
 
-
 nz-page-header {
   border: 1px solid rgb(235, 237, 240);
 }
 
-.wrap {
-  display: flex;
-}
-
-
-.extra-content {
-  min-width: 240px;
-  text-align: right;
-  font-size: 50px;
-}
-
 .min-100 {
   min-height: 100%;
+}
+
+::ng-deep .vertical-center-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .vertical-center-modal .ant-modal {
+  top: 0;
+}
+
+.text {
+transform: translate(0%, 25%);
+-ms-transform: translate(0%, 25%);
+color: white;
+font-size: 16px;
+height: 100%;
+width: 100%;
+}
+
+h6 {
+margin: 0;
 }

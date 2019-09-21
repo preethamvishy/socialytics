@@ -1,0 +1,14 @@
+<img class="card-img-top topMedia image" [src]="expandPost.node.display_url" />
+<div class="row justify-content-center align-middle text text-muted">
+    <div class="mt-3">
+        <span class="right-space">
+            <i class="fas fa-heart"></i>
+            {{expandPost.node.edge_media_preview_like.count  | number: '1.'}}
+        </span>
+        <i class="fas fa-comment"></i>
+        {{expandPost.node.edge_media_to_comment.count  | number: '1.'}}
+    </div>
+</div>
+<div nz-text class="row bio card-body">
+    {{expandPost.node.edge_media_to_caption.edges[0].node.text || ''}}
+</div>

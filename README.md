@@ -1,8 +1,7 @@
 # Socialytics
-A web and native desktop app for Instagram analytics. 🚀 insights using Angular 5 and Electron. 
+A web and native desktop app for Instagram analytics. 🚀 Blazing fast insights using Angular 8 and Electron. 
 
-![Socialytics](https://snag.gy/SNGiCc.jpg)
-
+![Socialytics](./src/assets/web-snapshot.png)
 
 
 Socialytics provides quick and actionable analytics based on the user's most recent posts. 

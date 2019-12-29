@@ -15,9 +15,16 @@ export class GalleryComponent implements OnInit {
   @Output() toggleModal = new EventEmitter();
   @Output() externalUrl = new EventEmitter();
 
-  constructor() { }
+  iconClass;
 
-  ngOnInit() {
+  constructor() { 
   }
 
+  ngOnInit() {
+    this.iconClass = this.term === 'likes' ? 'fas fa-heart' : 'fas fa-comment';
+  }
+
+  getCount(media) {
+    return this.term === 'likes' ? media.node.edge_media_preview_like.count : media.node.edge_media_to_comment.count
+  }
 }

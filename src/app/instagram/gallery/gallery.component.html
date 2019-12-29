@@ -8,8 +8,8 @@
                 <div class="card mb-4 box-shadow topMediaContainer">
                     <div class="overlay" (click)="toggleModal.emit(media)">
                         <div class="text">
-                            <i class="fas fa-heart"></i>
-                            {{media.node.edge_media_preview_like.count | number: '1.'}}
+                            <i [ngClass]="iconClass"></i>
+                            {{getCount(media) | number: '1.'}}
                             <br />{{term}}
                         </div>
                     </div>
